@@ -6,8 +6,8 @@
 #include <sstream>
 using namespace std;
 
-void printDig(bool a, bool b, bool c, bool d) {
-	short digit = a << 3 | b << 2 | c << 1 | d;
+void printDig(short digit) {
+	// short digit = a << 3 | b << 2 | c << 1 | d;
 	cout << "0123456789abcdef"[digit]; 
 }
 
@@ -22,26 +22,7 @@ void checkLink(cell& c1, cell& c2) {
 void printGrid(Grid g, int i = 0) {
 	for (int i = 0; i < g.rows(); ++i) {
 		for (int j = 0; j < g.columns(); ++j) {
-			cout << "0123456789abcdef"[g.connections(i, j)];
-			// cell cp = *g.at(i, j);
-			// int v[4];
-			// v[0] = g.at(i - 1, j) == nullptr;
-			// v[1] = g.at(i, j + 1) == nullptr;
-			// v[2] = g.at(i + 1, j) == nullptr;
-			// v[3] = g.at(i, j - 1) == nullptr;
-			// if (!v[0]) {
-			// 	v[0] = cp.linked(*g.at(i - 1, j));
-			// }
-			// if (!v[1]) {
-			// 	v[1] = cp.linked(*g.at(i, j + 1));
-			// }
-			// if (!v[2]) {
-			// 	v[2] = cp.linked(*g.at(i + 1, j));
-			// }
-			// if (!v[3]) {
-			// 	v[3] = cp.linked(*g.at(i, j - 1));
-			// }
-			// printDig(v[3], v[2], v[1], v[0]);
+			printDig(g.connections(i, j));
 		}
 		cout << endl;
 	}
