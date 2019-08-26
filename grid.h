@@ -15,8 +15,8 @@ public:
 	cell* at(int n);
 	cell* randomCell();
 	int size() const;
-	int rows();
-	int columns();
+	int rows() const;
+	int columns() const;
 private:
 	int _rows, _columns;
 	std::vector<std::vector<cell*> > cells;

@@ -23,19 +23,25 @@ class cell {
 	friend size_t std::hash<cell>::operator ()(const cell& c) const;
 public:
 	cell(int row, int col);
+	int row() const;
+	int column() const;
 	void setnorth(cell& c); 
+	cell* getnorth() const;
 	void setsouth(cell& c);
+	cell* getsouth() const;
 	void seteast(cell& c);
+	cell* geteast() const;
 	void setwest(cell& c);
+	cell* getwest() const;
 	void link(cell& c, bool bidi = true);
 	void unlink(cell& c, bool bidi = true);
 	bool linked(cell c);
 	void displayLinks();
-	void display() const;
+	void displayNeighbors() const;
 	std::vector<cell> getLinks();
 	// void neighborFlags(bool(&c)[4]) const;
 private:
-	int row, column;
+	int _row, _column;
 	cell* north; cell* south; cell* east; cell* west;
 	std::unordered_set<cell> links;
 };

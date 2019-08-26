@@ -40,12 +40,12 @@ cell* Grid::at(int n) {
 	}
 }
 
-int Grid::rows() {
+int Grid::rows() const {
 	// std::cout<<"rows\n";
 	return this->_rows;
 }
 
-int Grid::columns() {
+int Grid::columns() const {
 	// std::cout<<"cols\n";
 	return this->_columns;
 }

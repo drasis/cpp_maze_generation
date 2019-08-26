@@ -13,16 +13,26 @@ bool contains(unordered_set<T> myset, T i) {
 }
 
 cell::cell(int row, int col) {
-	this->row = row;
-	this->column = col;
+	this->_row = row;
+	this->_column = col;
 	this->north = nullptr;
 	this->south = nullptr;
 	this->east = nullptr;
 	this->west = nullptr;
 }
 
+int cell::row() const{
+	return this->_row;
+}
+
+int cell::column() const{
+	return this->_column;
+}
+
 void cell::setnorth(cell& c) {
 	this->north = &c;
+	// cout << this->north << endl;
+	// cout<< "setting north\n";
 }
 
 void cell::setsouth(cell& c) {
@@ -37,20 +47,36 @@ void cell::setwest(cell& c) {
 	this->west = &c;
 }
 
+cell* cell::getnorth() const {
+	return this->north;
+}
+
+cell* cell::getsouth() const {
+	return this->south;
+}
+
+cell* cell::geteast() const {
+	return this->east;
+}
+
+cell* cell::getwest() const {
+	return this->west;
+}
+
 ostream& operator<<(ostream& os, const cell& thecell) {
-	os << "cell(" << thecell.row << " " << thecell.column << ")";
+	os << "cell(" << thecell._row << " " << thecell._column << ")";
 	return os; 
 }
 
 bool operator==(const cell &cell1, const cell &cell2) {
-	return cell1.row == cell2.row && cell1.column == cell2.column;
+	return cell1._row == cell2._row && cell1._column == cell2._column;
 }
 
 namespace std {
   size_t hash<cell>::operator()(const cell &c) const {
   	int shiftAmt = int(sizeof(size_t) * 4); // half of size_t
-  	size_t colShifted = size_t(c.column) << shiftAmt;
-  	return colShifted | size_t(c.row);
+  	size_t colShifted = size_t(c._column) << shiftAmt;
+  	return colShifted | size_t(c._row);
   }
 }
 
@@ -78,6 +104,31 @@ void cell::displayLinks() {
 	for (c = this->links.begin(); c != this->links.end(); c++) {
 		cout << "    " << *c << "\n";
 	}
+}
+
+void cell::displayNeighbors() const {
+	cout << *this << " has neighbors:\n    north: ";
+	if (this->north == nullptr) {
+		cout<< "null\n    east: ";
+	} else {
+		cout<< *this->north << "\n    east: ";
+	}
+	if (this->east == nullptr) {
+		cout<< "null\n    south: ";
+	} else {
+		cout<< *this->east << "\n    south: ";
+	}
+	if (this->south == nullptr) {
+		cout<< "null\n    west: ";
+	} else {
+		cout<< *this->south << "\n    west: ";
+	}
+	if (this->west == nullptr) {
+		cout<< "null\n";
+	} else {
+		cout<< *this->west << "\n";
+	}
+
 }
 
 vector<cell> cell::getLinks() {
