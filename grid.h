@@ -14,6 +14,7 @@ public:
 	cell* at(int r, int c);
 	cell* at(int n);
 	cell* randomCell();
+	short connections(int r, int c);
 	int size() const;
 	int rows() const;
 	int columns() const;
