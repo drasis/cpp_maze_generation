@@ -77,7 +77,7 @@ short Grid::connections(int r, int c) {
 void Grid::configureCells() {
 	for (int r = 0; r < this->_rows; r++) {
 		for (int c = 0; c < this->_columns; c++) {
-			cell tc = *this->at(r, c);
+			cell& tc = *this->at(r, c);
 			tc.setnorth(*this->at(r - 1, c));
 			tc.setsouth(*this->at(r + 1, c));
 			tc.seteast(*this->at(r, c + 1));

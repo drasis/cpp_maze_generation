@@ -1,16 +1,12 @@
 #include "cell.h"
+#include "randomHelpers.h"
 #include <iostream>
 #include <unordered_set>
 #include <vector>
 
-// When we're not in a header file, it is ok to
-// have "using namespace std"
-using namespace std;
-
-template <class T>
-bool contains(unordered_set<T> myset, T i) {
-	return myset.find(i) == myset.end();
-}
+///////////////////////////////////////////////////////////////////////////////
+// CONSTRUCTOR ////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 cell::cell(int row, int col) {
 	this->_row = row;
@@ -19,6 +15,27 @@ cell::cell(int row, int col) {
 	this->south = nullptr;
 	this->east = nullptr;
 	this->west = nullptr;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// GETTING AND SETTING ROWS, COLUMNS, NEIGHBORS ///////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+cell* cell::randomNeighbor() {
+	std::vector<cell*> validNeighbors;
+	if (this->north != nullptr) {
+		validNeighbors.push_back(this->north);
+	}
+	if (this->east != nullptr) {
+		validNeighbors.push_back(this->east);
+	}
+	if (this->south != nullptr) {
+		validNeighbors.push_back(this->south);
+	}
+	if (this->west != nullptr) {
+		validNeighbors.push_back(this->west);
+	}
+	return validNeighbors[randInt(0, validNeighbors.size() - 1)];
 }
 
 int cell::row() const{
@@ -31,8 +48,6 @@ int cell::column() const{
 
 void cell::setnorth(cell& c) {
 	this->north = &c;
-	// cout << this->north << endl;
-	// cout<< "setting north\n";
 }
 
 void cell::setsouth(cell& c) {
@@ -63,7 +78,11 @@ cell* cell::getwest() const {
 	return this->west;
 }
 
-ostream& operator<<(ostream& os, const cell& thecell) {
+///////////////////////////////////////////////////////////////////////////////
+// OPERATORS SO CELL CLASS CAN BE USED IN UNORDERED SET AND USED IN OSTREAM ///
+///////////////////////////////////////////////////////////////////////////////
+
+std::ostream& operator<<(std::ostream& os, const cell& thecell) {
 	os << "cell(" << thecell._row << " " << thecell._column << ")";
 	return os; 
 }
@@ -78,6 +97,14 @@ namespace std {
   	size_t colShifted = size_t(c._column) << shiftAmt;
   	return colShifted | size_t(c._row);
   }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// METHODS TO LINK TO OTHER CELLS /////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+bool cell::hasNoLinks() {
+	return this->links.size() == 0;
 }
 
 void cell::link(cell& c, bool bidi) {
@@ -98,44 +125,47 @@ bool cell::linked(cell c) {
 	return contains(this->links, c);
 }
 
-void cell::displayLinks() {
-	cout << *this << " linked to:\n";
-	unordered_set<cell>::iterator c;
-	for (c = this->links.begin(); c != this->links.end(); c++) {
-		cout << "    " << *c << "\n";
-	}
-}
-
-void cell::displayNeighbors() const {
-	cout << *this << " has neighbors:\n    north: ";
-	if (this->north == nullptr) {
-		cout<< "null\n    east: ";
-	} else {
-		cout<< *this->north << "\n    east: ";
-	}
-	if (this->east == nullptr) {
-		cout<< "null\n    south: ";
-	} else {
-		cout<< *this->east << "\n    south: ";
-	}
-	if (this->south == nullptr) {
-		cout<< "null\n    west: ";
-	} else {
-		cout<< *this->south << "\n    west: ";
-	}
-	if (this->west == nullptr) {
-		cout<< "null\n";
-	} else {
-		cout<< *this->west << "\n";
-	}
-
-}
-
-vector<cell> cell::getLinks() {
-	vector<cell> connectedCells;
-	unordered_set<cell>::iterator c;
+std::vector<cell> cell::getLinks() {
+	std::vector<cell> connectedCells;
+	std::unordered_set<cell>::iterator c;
 	for (c = this->links.begin(); c != this->links.end(); c++) {
 		connectedCells.push_back(*c);
 	}
 	return connectedCells;
-};
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// DISPLAY METHODS FOR DEBUGGING //////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+void cell::displayLinks() {
+	std::cout << *this << " linked to:\n";
+	std::unordered_set<cell>::iterator c;
+	for (c = this->links.begin(); c != this->links.end(); c++) {
+		std::cout << "    " << *c << "\n";
+	}
+}
+
+void cell::displayNeighbors() const {
+	std::cout << *this << " has neighbors:\n    north: ";
+	if (this->north == nullptr) {
+		std::cout<< "null\n    east: ";
+	} else {
+		std::cout<< *this->north << "\n    east: ";
+	}
+	if (this->east == nullptr) {
+		std::cout<< "null\n    south: ";
+	} else {
+		std::cout<< *this->east << "\n    south: ";
+	}
+	if (this->south == nullptr) {
+		std::cout<< "null\n    west: ";
+	} else {
+		std::cout<< *this->south << "\n    west: ";
+	}
+	if (this->west == nullptr) {
+		std::cout<< "null\n";
+	} else {
+		std::cout<< *this->west << "\n";
+	}
+}

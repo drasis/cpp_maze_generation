@@ -23,6 +23,7 @@ void printGrid(Grid g, int i = 0) {
 	for (int i = 0; i < g.rows(); ++i) {
 		for (int j = 0; j < g.columns(); ++j) {
 			printDig(g.connections(i, j));
+			// g.at(i,j)->displayNeighbors();
 		}
 		cout << endl;
 	}
@@ -68,15 +69,14 @@ void sidesinderWalk(Grid& g) {
 
 void aldousBroder(Grid& g) {
 	cell* cp = g.randomCell();
-	int unvisited = g.size();
-	// cout << "unvisited: " << unvisited << endl;
+	int unvisited = g.size() - 1;
 	while (unvisited > 0) {
-		// neighbor = one of cp's neighbors (randomly picked)
-		// if (the neighbor isn't linked to anything) {
-			// cp dot link neighbor
+		cell* neighbor = cp->randomNeighbor();
+		if (neighbor->hasNoLinks()) {
+			cp->link(*neighbor);
 			unvisited -= 1;
-		// }
-			// cp = neighbor;
+		}
+		cp = neighbor;
 	}
 }
 
@@ -93,15 +93,10 @@ int main(int argc, char *argv[]) {
 	} else {
 		exit(1);
 	}
-	for (int i = 0; i < 10; ++i)
-	{
-		cout << randInt(0, 9) << "  ";
-	}
 	Grid g(r, c);
 	// randomBinaryWalk(g);
-	sidesinderWalk(g);
-	// aldousBroder(g);
-	cout << "setup grid:\n\n";
+	// sidesinderWalk(g);
+	aldousBroder(g);
 	printGrid(g);
 }
 
