@@ -1,3 +1,4 @@
+#include "randomHelpers.h"
 #include "cell.h"
 #include "grid.h"
 #include <string>
@@ -7,7 +8,6 @@
 using namespace std;
 
 void printDig(short digit) {
-	// short digit = a << 3 | b << 2 | c << 1 | d;
 	cout << "0123456789abcdef"[digit]; 
 }
 
@@ -31,7 +31,7 @@ void printGrid(Grid g, int i = 0) {
 void randomBinaryWalk(Grid& g) {
 	for (int i = 0; i < g.rows(); ++i) {
 		for (int j = 0; j < g.columns(); ++j) {
-			int ind = rand() % 2;
+			int ind = randInt(0, 1);
 			cell* cells[2] = {g.at(i + 1, j), g.at(i, j + 1)};
 			if (cells[ind] == nullptr) {
 				ind = (ind + 1) % 2;
@@ -51,9 +51,9 @@ void sidesinderWalk(Grid& g) {
 			run.push_back(cp);
 			bool atEast = g.at(i, j + 1) == nullptr;
 			bool atSouth = g.at(i + 1, j) == nullptr;
-			bool shouldClose = atEast || (!atSouth && (rand() % 4 == 0));
+			bool shouldClose = atEast || (!atSouth && (randInt(0, 3) == 0));
 			if (shouldClose) {
-				cell* member = run[rand() % run.size()];
+				cell* member = run[randInt(0, run.size() - 1)];
 				if (g.at(member->row() + 1, member->column()) != nullptr) {
 					member->link(*g.at(member->row() + 1, member->column()));
 				}
@@ -66,11 +66,24 @@ void sidesinderWalk(Grid& g) {
 	}
 }
 
+void aldousBroder(Grid& g) {
+	cell* cp = g.randomCell();
+	int unvisited = g.size();
+	// cout << "unvisited: " << unvisited << endl;
+	while (unvisited > 0) {
+		// neighbor = one of cp's neighbors (randomly picked)
+		// if (the neighbor isn't linked to anything) {
+			// cp dot link neighbor
+			unvisited -= 1;
+		// }
+			// cp = neighbor;
+	}
+}
+
 int main(int argc, char *argv[]) {
 	srand(time(nullptr));
 	int r, c;
-	// cout<<"random max: " << RAND_MAX;
-	// cout << argc << endl;
+
 	if (argc == 3) {
 		r = stoi(argv[1]);
 		c = stoi(argv[2]);
@@ -80,9 +93,15 @@ int main(int argc, char *argv[]) {
 	} else {
 		exit(1);
 	}
+	for (int i = 0; i < 10; ++i)
+	{
+		cout << randInt(0, 9) << "  ";
+	}
 	Grid g(r, c);
 	// randomBinaryWalk(g);
 	sidesinderWalk(g);
+	// aldousBroder(g);
+	cout << "setup grid:\n\n";
 	printGrid(g);
 }
 

@@ -1,5 +1,6 @@
 #include "grid.h"
 #include "cell.h"
+#include "randomHelpers.h"
 #include <vector>
 #include <math.h>
 
@@ -51,7 +52,8 @@ int Grid::columns() const {
 }
 
 cell* Grid::randomCell() {
-	return this->at(std::rand() % this->_rows, std::rand() % this->_columns);
+	return this->at(randInt(0, this->rows() - 1), randInt(0, this->_columns - 1));
+	// return this->at(std::rand() % this->_rows, std::rand() % this->_columns);
 }
 
 short Grid::connections(int r, int c) {
