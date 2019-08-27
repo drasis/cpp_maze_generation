@@ -78,15 +78,39 @@ void wilson(Grid& g) {
 		unvisited.insert(*g.at(i));
 	}
 	// cout << "before removal: " << unvisited.size() << endl;
-	cell first = *g.randomCell();
-	unvisited.erase(first);
+	cell* first = g.randomCell();
+	unvisited.erase(*first);
+	cout << first << endl;
 	// cout << "after removal:  " << unvisited.size() << endl;
 	while (unvisited.size() > 0) {
+		// cout<<"first while\n";
 		cell c = randomElement(unvisited);
-		std::vector<cell> path = {c};
+		std::vector<cell> path;
+		path.push_back(c);
+		// cout << "number of unvisited: " << unvisited.size() << endl;
 		while(contains(unvisited, c)) {
-			
+			// cout<<"innerwhile\n";
+			c = *c.randomNeighbor();
+			int position = findIndex(path, c);
+			if (position == -1) {
+				path.push_back(c);
+			} else if (position > 0) {
+				cout<<"path length: " << path.size() << endl;
+				cout<<"position:    " << position << endl;
+				// path.resize(position - 1);
+				path.erase(path.begin() + position, path.end());
+				cout<<"final len:   " << path.size() << endl << endl;
+			} else if (position == 0) {
+				path.clear();
+			}
 		}
+		for (int i = 0; i < path.size() - 2; ++i) {
+			path[i].link(path[i + 1]);
+			unvisited.erase(path[i]);
+		}
+		// printGrid(g);
+		// cout << "number of unvisited: " << unvisited.size() << endl;
+		// cout << "\n\n\n";
 	}
 }
 
@@ -106,8 +130,8 @@ int main(int argc, char *argv[]) {
 	Grid g(r, c);
 	// randomBinaryWalk(g);
 	// sidewinderWalk(g);
-	// aldousBroder(g);
-	wilson(g);
+	aldousBroder(g);
+	// wilson(g);
 	printGrid(g);
 }
 
