@@ -82,10 +82,10 @@ void wilson(Grid& g) {
 	unvisited.erase(*first);
 	cout << first << endl;
 	// cout << "after removal:  " << unvisited.size() << endl;
+	std::vector<cell> path;
 	while (unvisited.size() > 0) {
 		// cout<<"first while\n";
 		cell c = randomElement(unvisited);
-		std::vector<cell> path;
 		path.push_back(c);
 		// cout << "number of unvisited: " << unvisited.size() << endl;
 		while(contains(unvisited, c)) {
@@ -108,6 +108,7 @@ void wilson(Grid& g) {
 			path[i].link(path[i + 1]);
 			unvisited.erase(path[i]);
 		}
+		path.clear();
 		// printGrid(g);
 		// cout << "number of unvisited: " << unvisited.size() << endl;
 		// cout << "\n\n\n";
