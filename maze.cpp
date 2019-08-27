@@ -90,8 +90,8 @@ int main(int argc, char *argv[]) {
 	}
 	Grid g(r, c);
 	// randomBinaryWalk(g);
-	// sidesinderWalk(g);
-	aldousBroder(g);
+	sidesinderWalk(g);
+	// aldousBroder(g);
 	printGrid(g);
 }
 
