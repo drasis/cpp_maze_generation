@@ -41,6 +41,7 @@ public:
 	std::vector<cell> getLinks();
 	cell* randomNeighbor();
 	bool hasNoLinks();
+	short connections();
 	// void neighborFlags(bool(&c)[4]) const;
 private:
 	int _row, _column;

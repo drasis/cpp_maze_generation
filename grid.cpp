@@ -25,7 +25,6 @@ void Grid::prepareGrid() {
 }
 
 cell* Grid::at(int r, int c) {
-	// std::cout<< "r: " << r << "  c: " << c << std::endl;
 	if (r >= 0 && r < this->_rows && c < this->_columns && c >= 0) {
 		return this->cells.at(r).at(c);
 	} else {
@@ -42,36 +41,19 @@ cell* Grid::at(int n) {
 }
 
 int Grid::rows() const {
-	// std::cout<<"rows\n";
 	return this->_rows;
 }
 
 int Grid::columns() const {
-	// std::cout<<"cols\n";
 	return this->_columns;
 }
 
 cell* Grid::randomCell() {
 	return this->at(randInt(0, this->rows() - 1), randInt(0, this->_columns - 1));
-	// return this->at(std::rand() % this->_rows, std::rand() % this->_columns);
 }
 
 short Grid::connections(int r, int c) {
-	cell cp = *this->at(r, c);
-	int v[4] = {true, true, true, true};
-	if (!(this->at(r - 1, c) == nullptr)) {
-		v[0] = cp.linked(*this->at(r - 1, c));
-	}
-	if (!(this->at(r, c + 1) == nullptr)) {
-		v[1] = cp.linked(*this->at(r, c + 1));
-	}
-	if (!(this->at(r + 1, c) == nullptr)) {
-		v[2] = cp.linked(*this->at(r + 1, c));
-	}
-	if (!(this->at(r, c - 1) == nullptr)) {
-		v[3] = cp.linked(*this->at(r, c - 1));
-	}
-	return v[3] << 3 | v[2] << 2 | v[1] << 1 | v[0];
+	return this->at(r, c)->connections();
 }
 
 void Grid::configureCells() {

@@ -11,19 +11,10 @@ void printDig(short digit) {
 	cout << "0123456789abcdef"[digit]; 
 }
 
-void checkLink(cell& c1, cell& c2) {
-	if (c1.linked(c2) && c2.linked(c1)) {
-		cout << "linked\n";
-	} else {
-		cout << "not linked\n";
-	}
-}
-
 void printGrid(Grid g, int i = 0) {
 	for (int i = 0; i < g.rows(); ++i) {
 		for (int j = 0; j < g.columns(); ++j) {
 			printDig(g.connections(i, j));
-			// g.at(i,j)->displayNeighbors();
 		}
 		cout << endl;
 	}
@@ -78,6 +69,10 @@ void aldousBroder(Grid& g) {
 		}
 		cp = neighbor;
 	}
+}
+
+void wilson(Grid& g) {
+
 }
 
 int main(int argc, char *argv[]) {
