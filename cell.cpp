@@ -137,16 +137,16 @@ std::vector<cell> cell::getLinks() {
 short cell::connections() {
 	int v[4] = {true, true, true, true};
 	if (!(this->north == nullptr)) {
-		v[0] = this->linked(*this->north);
+		v[0] = !this->linked(*this->north);
 	}
 	if (!(this->east == nullptr)) {
-		v[1] = this->linked(*this->east);
+		v[1] = !this->linked(*this->east);
 	}
 	if (!(this->south == nullptr)) {
-		v[2] = this->linked(*this->south);
+		v[2] = !this->linked(*this->south);
 	}
 	if (!(this->west == nullptr)) {
-		v[3] = this->linked(*this->west);
+		v[3] = !this->linked(*this->west);
 	}
 	return v[3] << 3 | v[2] << 2 | v[1] << 1 | v[0];
 }

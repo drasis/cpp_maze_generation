@@ -1,10 +1,11 @@
 #include "randomHelpers.h"
 #include "cell.h"
 #include "grid.h"
-#include <string>
-#include <vector>
-#include <iostream>
-#include <sstream>
+// #include <string>
+// #include <sstream>
+// #include <vector>
+// #include <iostream>
+#include <unordered_set>
 using namespace std;
 
 void printDig(short digit) {
@@ -35,7 +36,7 @@ void randomBinaryWalk(Grid& g) {
 	}
 }
 
-void sidesinderWalk(Grid& g) {
+void sidewinderWalk(Grid& g) {
 	vector<cell*> run;
 	for (int i = 0; i < g.rows(); ++i) {
 		for (int j = 0; j < g.columns(); ++j) {
@@ -72,7 +73,21 @@ void aldousBroder(Grid& g) {
 }
 
 void wilson(Grid& g) {
-
+	unordered_set<cell> unvisited;
+	for (int i = 0; i < g.size() - 1; ++i) {
+		unvisited.insert(*g.at(i));
+	}
+	// cout << "before removal: " << unvisited.size() << endl;
+	cell first = *g.randomCell();
+	unvisited.erase(first);
+	// cout << "after removal:  " << unvisited.size() << endl;
+	while (unvisited.size() > 0) {
+		cell c = randomElement(unvisited);
+		std::vector<cell> path = {c};
+		while(contains(unvisited, c)) {
+			
+		}
+	}
 }
 
 int main(int argc, char *argv[]) {
@@ -90,8 +105,9 @@ int main(int argc, char *argv[]) {
 	}
 	Grid g(r, c);
 	// randomBinaryWalk(g);
-	sidesinderWalk(g);
+	// sidewinderWalk(g);
 	// aldousBroder(g);
+	wilson(g);
 	printGrid(g);
 }
 
