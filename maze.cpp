@@ -131,8 +131,9 @@ int main(int argc, char *argv[]) {
 	Grid g(r, c);
 	// randomBinaryWalk(g);
 	// sidewinderWalk(g);
-	aldousBroder(g);
-	// wilson(g);
+	// aldousBroder(g);
+	// wilson(g); // DOESN'T WORK I NEED TO TAKE A REST FROM THIS ONE!!!!
+	
 	printGrid(g);
 }
 
