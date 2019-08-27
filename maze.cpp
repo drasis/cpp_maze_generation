@@ -41,17 +41,17 @@ void sidesinderWalk(Grid& g) {
 		for (int j = 0; j < g.columns(); ++j) {
 			cell* cp = g.at(i, j);
 			run.push_back(cp);
-			bool atEast = g.at(i, j + 1) == nullptr;
-			bool atSouth = g.at(i + 1, j) == nullptr;
+			bool atEast = cp->geteast() == nullptr;
+			bool atSouth = cp->getsouth() == nullptr;
 			bool shouldClose = atEast || (!atSouth && (randInt(0, 3) == 0));
 			if (shouldClose) {
 				cell* member = run[randInt(0, run.size() - 1)];
-				if (g.at(member->row() + 1, member->column()) != nullptr) {
-					member->link(*g.at(member->row() + 1, member->column()));
+				if (member->getsouth() != nullptr) {
+					member->link(*member->getsouth());
 				}
 				run.clear();
-			} else if (g.at(cp->row(), cp->column() + 1) != nullptr) {
-				cp->link(*g.at(cp->row(), cp->column() + 1));
+			} else if (cp->geteast() != nullptr) {
+				cp->link(*cp->geteast());
 			}
 		}
 		run.clear();
