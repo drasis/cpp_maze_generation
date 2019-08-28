@@ -35,13 +35,15 @@ public:
 	cell* getwest() const;
 	void link(cell& c, bool bidi = true);
 	void unlink(cell& c, bool bidi = true);
-	bool linked(cell c);
+	bool linked(cell& c);
 	void displayLinks();
 	void displayNeighbors() const;
 	std::vector<cell> getLinks();
 	cell* randomNeighbor();
 	bool hasNoLinks();
 	short connections();
+	std::vector<cell*> neighbors();
+	std::vector<cell*> neighborsWithNoLinks();
 	// void neighborFlags(bool(&c)[4]) const;
 private:
 	int _row, _column;

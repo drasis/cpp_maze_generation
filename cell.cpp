@@ -35,6 +35,9 @@ cell* cell::randomNeighbor() {
 	if (this->west != nullptr) {
 		validNeighbors.push_back(this->west);
 	}
+	if (validNeighbors.size() == 0) {
+		return nullptr;
+	}
 	return validNeighbors[randInt(0, validNeighbors.size() - 1)];
 }
 
@@ -121,7 +124,7 @@ void cell::unlink(cell& c, bool bidi) {
 	}
 }
 
-bool cell::linked(cell c) {
+bool cell::linked(cell& c) {
 	return contains(this->links, c);
 }
 
@@ -136,19 +139,61 @@ std::vector<cell> cell::getLinks() {
 
 short cell::connections() {
 	int v[4] = {true, true, true, true};
-	if (!(this->north == nullptr)) {
+	if (this->north != nullptr) {
 		v[0] = !this->linked(*this->north);
 	}
-	if (!(this->east == nullptr)) {
+	if (this->east != nullptr) {
 		v[1] = !this->linked(*this->east);
 	}
-	if (!(this->south == nullptr)) {
+	if (this->south != nullptr) {
 		v[2] = !this->linked(*this->south);
 	}
-	if (!(this->west == nullptr)) {
+	if (this->west != nullptr) {
 		v[3] = !this->linked(*this->west);
 	}
 	return v[3] << 3 | v[2] << 2 | v[1] << 1 | v[0];
+}
+
+std::vector<cell*> cell::neighbors() {
+	std::vector<cell*> ret;
+	if (this->north != nullptr) {
+		ret.push_back(north);
+	}
+	if (this->east != nullptr) {
+		ret.push_back(east);
+	}
+	if (this->south != nullptr) {
+		ret.push_back(south);
+	}
+	if (this->west != nullptr) {
+		ret.push_back(west);
+	}
+	return ret;
+}
+
+std::vector<cell*> cell::neighborsWithNoLinks() {
+	std::vector<cell*> ret;
+	if (this->north != nullptr) {
+		if(this->north->hasNoLinks()) {
+			ret.push_back(north);
+		}
+	}
+	if (this->east != nullptr) {
+		if(this->east->hasNoLinks()) {
+			ret.push_back(east);
+		}
+	}
+	if (this->south != nullptr) {
+		if(this->south->hasNoLinks()) {
+			ret.push_back(south);
+		}
+	}
+	if (this->west != nullptr) {
+		if(this->west->hasNoLinks()) {
+			ret.push_back(west);
+		}
+	}
+	return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

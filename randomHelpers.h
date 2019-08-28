@@ -6,7 +6,7 @@
 int randInt(int inclusiveLowerBound, int inclusiveUpperBound);
 
 template <class T>
-bool contains(std::unordered_set<T>& myset, T i) {
+bool contains(std::unordered_set<T>& myset, T& i) {
 	return myset.find(i) != myset.end();
 }
 
@@ -24,7 +24,7 @@ T randomElement(std::unordered_set<T>& myset) {
 template <class T>
 int findIndex(std::vector<T>& v, T obj) {
 	for (int i = 0; i < v.size(); ++i) {
-		std::cout<<"checking index: " << i << std::endl;
+		// std::cout<<"checking index: " << i << std::endl;
 		if (v[i] == obj) {
 			return i;
 		}
