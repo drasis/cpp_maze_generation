@@ -18,8 +18,8 @@ void Grid::prepareGrid() {
 	}
 	for (int r = 0; r < this->_rows; r++) {
 		for (int c = 0; c < this->_columns; c++) {
-			cell* tn = new cell(r, c);
-			this->cells[r][c] = tn;
+			// cell* tn = new cell(r, c);
+			this->cells[r][c] = new cell(r, c);
 		}
 	}
 }
