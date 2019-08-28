@@ -154,43 +154,43 @@ short cell::connections() {
 	return v[3] << 3 | v[2] << 2 | v[1] << 1 | v[0];
 }
 
-std::vector<cell*>* cell::neighbors() {
-	std::vector<cell*>* ret;
+std::vector<cell*> cell::neighbors() {
+	std::vector<cell*> ret;
 	if (this->north != nullptr) {
-		ret->push_back(north);
+		ret.push_back(north);
 	}
 	if (this->east != nullptr) {
-		ret->push_back(east);
+		ret.push_back(east);
 	}
 	if (this->south != nullptr) {
-		ret->push_back(south);
+		ret.push_back(south);
 	}
 	if (this->west != nullptr) {
-		ret->push_back(west);
+		ret.push_back(west);
 	}
 	return ret;
 }
 
-std::vector<cell*>* cell::neighborsWithNoLinks() {
-	std::vector<cell*>* ret;
+std::vector<cell*> cell::neighborsWithNoLinks() {
+	std::vector<cell*> ret;
 	if (this->north != nullptr) {
 		if(this->north->hasNoLinks()) {
-			ret->push_back(north);
+			ret.push_back(north);
 		}
 	}
 	if (this->east != nullptr) {
 		if(this->east->hasNoLinks()) {
-			ret->push_back(east);
+			ret.push_back(east);
 		}
 	}
 	if (this->south != nullptr) {
 		if(this->south->hasNoLinks()) {
-			ret->push_back(south);
+			ret.push_back(south);
 		}
 	}
 	if (this->west != nullptr) {
 		if(this->west->hasNoLinks()) {
-			ret->push_back(west);
+			ret.push_back(west);
 		}
 	}
 	return ret;

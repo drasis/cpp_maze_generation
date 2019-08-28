@@ -127,12 +127,13 @@ void huntAndKill(Grid& g) {
 	int unvisited = g.size() - 1;
 	cell* cp = g.randomCell();
 	while (unvisited > 0) {
-		if (cp->neighborsWithNoLinks()->size() == 0) {
+		// if (cp->randomNeighbor() == nullptr || cp->neighborsWithNoLinks().size() == 0) {
+		if (cp->neighborsWithNoLinks().size() == 0) {
 			for (int i = 0; i < g.size() - 1; ++i) {
 				bool happenedUpon = false;
 				cell* testing = g.at(i);
 				if (testing->hasNoLinks()) {
-					std::vector<cell*> neighbors = *testing->neighbors();
+					std::vector<cell*> neighbors = testing->neighbors();
 					for (int j = 0; j < neighbors.size() - 1; ++j) {
 						if (!neighbors[j]->hasNoLinks()) {
 							testing->link(*neighbors[j]);
@@ -148,7 +149,7 @@ void huntAndKill(Grid& g) {
 				}
 			}
 		} else {
-			std::vector<cell*> linkless = *cp->neighborsWithNoLinks();
+			std::vector<cell*> linkless = cp->neighborsWithNoLinks();
 			cell* newcp = linkless[randInt(0, linkless.size() - 1)];
 			cp->link(*newcp);
 			unvisited--;
@@ -159,18 +160,16 @@ void huntAndKill(Grid& g) {
 
 void recursiveBacktrack(Grid& g) {
 	std::vector<cell*> stack;
-	cell* cp = g.randomCell();
-	stack.push_back(cp);
+	stack.push_back(g.randomCell());
 	while(stack.size() > 0) {
-		if (cp->neighborsWithNoLinks()->size() == 0) {
-			cp = stack[stack.size() - 1];
-			stack.pop_back();
-		} else {
-			std::vector<cell*> linkless = *cp->neighborsWithNoLinks();
+		cell* cp = stack.at(stack.size() - 1);
+		if (cp->neighborsWithNoLinks().size() > 0) {
+			std::vector<cell*> linkless = cp->neighborsWithNoLinks();
 			cell* nextcp = linkless[randInt(0, linkless.size() - 1)];
 			cp->link(*nextcp);
-			cp = nextcp;
-			stack.push_back(cp);
+			stack.push_back(nextcp);
+		} else {
+			stack.pop_back();
 		}
 	}
 }
@@ -196,6 +195,7 @@ int main(int argc, char *argv[]) {
 	// sidewinderWalk(g);
 	// aldousBroder(g);
 	// wilson(g); // DOESN'T WORK I NEED TO TAKE A REST FROM THIS ONE!!!!
+	// huntAndKill(g);
 	recursiveBacktrack(g);
 	// cout << "time to make maze: " << double(clock() - begin) << "\n";
 	// begin = clock();
