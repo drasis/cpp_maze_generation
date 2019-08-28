@@ -127,7 +127,7 @@ void huntAndKill(Grid& g) {
 	int unvisited = g.size() - 1;
 	cell* cp = g.randomCell();
 	while (unvisited > 0) {
-		if (cp->neighborsWithNoLinks().size() == 0) {
+		if (cp->neighborsWithNoLinks()->size() == 0) {
 			for (int i = 0; i < g.size() - 1; ++i) {
 				bool happenedUpon = false;
 				cell* testing = g.at(i);
@@ -148,7 +148,7 @@ void huntAndKill(Grid& g) {
 				}
 			}
 		} else {
-			std::vector<cell*> linkless = cp->neighborsWithNoLinks();
+			std::vector<cell*> linkless = *cp->neighborsWithNoLinks();
 			cell* newcp = linkless[randInt(0, linkless.size() - 1)];
 			cp->link(*newcp);
 			unvisited--;
@@ -162,11 +162,11 @@ void recursiveBacktrack(Grid& g) {
 	cell* cp = g.randomCell();
 	stack.push_back(cp);
 	while(stack.size() > 0) {
-		if (cp->neighborsWithNoLinks().size() == 0) {
+		if (cp->neighborsWithNoLinks()->size() == 0) {
 			cp = stack[stack.size() - 1];
 			stack.pop_back();
 		} else {
-			std::vector<cell*> linkless = cp->neighborsWithNoLinks();
+			std::vector<cell*> linkless = *cp->neighborsWithNoLinks();
 			cell* nextcp = linkless[randInt(0, linkless.size() - 1)];
 			cp->link(*nextcp);
 			cp = nextcp;

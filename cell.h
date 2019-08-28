@@ -43,7 +43,7 @@ public:
 	bool hasNoLinks();
 	short connections();
 	std::vector<cell*>* neighbors();
-	std::vector<cell*> neighborsWithNoLinks();
+	std::vector<cell*>* neighborsWithNoLinks();
 	// void neighborFlags(bool(&c)[4]) const;
 private:
 	int _row, _column;
