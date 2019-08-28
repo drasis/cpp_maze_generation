@@ -132,7 +132,7 @@ void huntAndKill(Grid& g) {
 				bool happenedUpon = false;
 				cell* testing = g.at(i);
 				if (testing->hasNoLinks()) {
-					std::vector<cell*> neighbors = testing->neighbors();
+					std::vector<cell*> neighbors = *testing->neighbors();
 					for (int j = 0; j < neighbors.size() - 1; ++j) {
 						if (!neighbors[j]->hasNoLinks()) {
 							testing->link(*neighbors[j]);

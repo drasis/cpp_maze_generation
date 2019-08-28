@@ -8,8 +8,6 @@ class cell;
 class Grid {
 public:
 	Grid(int rows, int columns);
-	void prepareGrid();
-	void configureCells();
 	cell* at(int r, int c);
 	cell* at(int n);
 	cell* randomCell();
@@ -18,6 +16,8 @@ public:
 	int rows() const;
 	int columns() const;
 private:
+	void prepareGrid();
+	void configureCells();
 	int _rows, _columns;
 	std::vector<std::vector<cell*> > cells;
 };

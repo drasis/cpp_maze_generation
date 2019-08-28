@@ -18,7 +18,6 @@ void Grid::prepareGrid() {
 	}
 	for (int r = 0; r < this->_rows; r++) {
 		for (int c = 0; c < this->_columns; c++) {
-			// cell* tn = new cell(r, c);
 			this->cells[r][c] = new cell(r, c);
 		}
 	}
@@ -64,6 +63,11 @@ void Grid::configureCells() {
 			tc.setsouth(*this->at(r + 1, c));
 			tc.seteast(*this->at(r, c + 1));
 			tc.setwest(*this->at(r, c - 1));
+			// cell* tc = this->at(r, c);
+			// tc->setnorth(*this->at(r - 1, c));
+			// tc->setsouth(*this->at(r + 1, c));
+			// tc->seteast(*this->at(r, c + 1));
+			// tc->setwest(*this->at(r, c - 1));
 		}
 	}
 }

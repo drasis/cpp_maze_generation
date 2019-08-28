@@ -22,7 +22,7 @@ T randomElement(std::unordered_set<T>& myset) {
 }
 
 template <class T>
-int findIndex(std::vector<T>& v, T obj) {
+int findIndex(std::vector<T>& v, T& obj) {
 	for (int i = 0; i < v.size(); ++i) {
 		// std::cout<<"checking index: " << i << std::endl;
 		if (v[i] == obj) {

@@ -154,19 +154,19 @@ short cell::connections() {
 	return v[3] << 3 | v[2] << 2 | v[1] << 1 | v[0];
 }
 
-std::vector<cell*> cell::neighbors() {
-	std::vector<cell*> ret;
+std::vector<cell*>* cell::neighbors() {
+	std::vector<cell*>* ret;
 	if (this->north != nullptr) {
-		ret.push_back(north);
+		ret->push_back(north);
 	}
 	if (this->east != nullptr) {
-		ret.push_back(east);
+		ret->push_back(east);
 	}
 	if (this->south != nullptr) {
-		ret.push_back(south);
+		ret->push_back(south);
 	}
 	if (this->west != nullptr) {
-		ret.push_back(west);
+		ret->push_back(west);
 	}
 	return ret;
 }
