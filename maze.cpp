@@ -1,6 +1,7 @@
 #include "randomHelpers.h"
 #include "cell.h"
 #include "grid.h"
+#include "mask.h"
 // #include <string>
 // #include <sstream>
 // #include <vector>
@@ -158,16 +159,17 @@ void huntAndKill(Grid& g) {
 	}
 }
 
-void recursiveBacktrack(Grid& g) {
+void backtrackingCarver(Grid& g) {
 	std::vector<cell*> stack;
 	stack.push_back(g.randomCell());
 	while(stack.size() > 0) {
+		std::cout << stack.size() << std::endl;
 		cell* cp = stack.at(stack.size() - 1);
-		if (cp->neighborsWithNoLinks().size() > 0) {
-			std::vector<cell*> linkless = cp->neighborsWithNoLinks();
-			cell* nextcp = linkless[randInt(0, linkless.size() - 1)];
-			cp->link(*nextcp);
+		std::vector<cell*> linklessNeighbors = cp->neighborsWithNoLinks();
+		if (linklessNeighbors.size() > 0) {
+			cell* nextcp = linklessNeighbors[randInt(0, linklessNeighbors.size() - 1)];
 			stack.push_back(nextcp);
+			cp->link(*nextcp);
 		} else {
 			stack.pop_back();
 		}
@@ -188,7 +190,8 @@ int main(int argc, char *argv[]) {
 	} else {
 		exit(1);
 	}
-	Grid g(r, c);
+	Mask m(r, c, "./recurselogo.txt");
+	// Grid g(r, c);
 	// cout << "time to make grid: " << double(clock() - begin) << "\n";
 	// begin = clock();
 	// randomBinaryWalk(g);
@@ -196,10 +199,10 @@ int main(int argc, char *argv[]) {
 	// aldousBroder(g);
 	// wilson(g); // DOESN'T WORK I NEED TO TAKE A REST FROM THIS ONE!!!!
 	// huntAndKill(g);
-	recursiveBacktrack(g);
+	// backtrackingCarver(g);
 	// cout << "time to make maze: " << double(clock() - begin) << "\n";
 	// begin = clock();
-	printGrid(g);
+	// printGrid(g);
 	// cout << "time to print maze: " << double(clock() - begin) << "\n";
 }
 

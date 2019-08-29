@@ -18,6 +18,7 @@ public:
 private:
 	void prepareGrid();
 	void configureCells();
+protected:
 	int _rows, _columns;
 	std::vector<std::vector<cell*> > cells;
 };
