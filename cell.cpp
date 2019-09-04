@@ -49,20 +49,42 @@ int cell::column() const{
 	return this->_column;
 }
 
-void cell::setnorth(cell& c) {
-	this->north = &c;
+void cell::setnorth(cell& c, bool tonull) {
+	// std::cout << "call to north\n";
+	// std::cout <<"this: " << this << "\nthis->north: " << this->north << std::endl;
+	if (!tonull) {
+		this->north = &c;
+	} else {
+		this->north = nullptr;
+	}
+	// std::cout << "leaving north\n";
 }
 
-void cell::setsouth(cell& c) {
-	this->south = &c;
+void cell::setsouth(cell& c, bool tonull) {
+	// std::cout << "call to south\n" << std::flush;
+	if (!tonull) {
+		this->south = &c;
+	} else {
+		this->south = nullptr;
+	}
 }
 
-void cell::seteast(cell& c) {
-	this->east = &c;
+void cell::seteast(cell& c, bool tonull) {
+	// std::cout << "call to east\n";
+	if (!tonull) {
+		this->east = &c;
+	} else {
+		this->east = nullptr;
+	}
 }
 
-void cell::setwest(cell& c) {
-	this->west = &c;
+void cell::setwest(cell& c, bool tonull) {
+	// std::cout << "call to west\n";
+	if (!tonull) {
+		this->west = &c;
+	} else {
+		this->west = nullptr;
+	}
 }
 
 cell* cell::getnorth() const {

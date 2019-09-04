@@ -25,13 +25,13 @@ public:
 	cell(int row, int col);
 	int row() const;
 	int column() const;
-	void setnorth(cell& c); 
+	void setnorth(cell& c, bool tonull = false); 
 	cell* getnorth() const;
-	void setsouth(cell& c);
+	void setsouth(cell& c, bool tonull = false);
 	cell* getsouth() const;
-	void seteast(cell& c);
+	void seteast(cell& c, bool tonull = false);
 	cell* geteast() const;
-	void setwest(cell& c);
+	void setwest(cell& c, bool tonull = false);
 	cell* getwest() const;
 	void link(cell& c, bool bidi = true);
 	void unlink(cell& c, bool bidi = true);

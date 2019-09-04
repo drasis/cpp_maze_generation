@@ -1,7 +1,7 @@
 #include "cell.h"
 #include "mask.h"
 #include <fstream>
-// #include "randomHelpers.h"
+#include "randomHelpers.h"
 // #include <iostream>
 // #include <unordered_set>
 // #include <vector>
@@ -18,13 +18,7 @@ Mask::Mask(int rows, int columns, std::string path) : Grid(rows, columns) {
 				if (line[i] == 'x') {
 					this->_valid_cells += 1;
 				}
-				// if (v[v.size() - 1]) {
-				// 	std::cout << "▉▉";
-				// } else {
-				// 	std::cout << "  ";
-				// }
 			}
-			// std::cout<< "\n";
 			this->_mask.push_back(v);
 		}
 		inp.close();
@@ -32,14 +26,91 @@ Mask::Mask(int rows, int columns, std::string path) : Grid(rows, columns) {
 		std::cout << "couldn't read file\n";
 		exit(1);
 	}
-	std::cout<< "valid cells: " << this->valid_cells() << std::endl;
 	if (this->_mask.size() != this->_rows || 
 		this->_mask[0].size() != this->_columns) {
 		std::cout << "mask size does not match input size\n";
 		exit(1);
 	}
+	
+	
+	// this->reconfigureCells();
+	// std::cout <<"configured\n";
+	// this->eraseGrid();
+	// this->eraseGrid();
+	// std::cout<<"erased\n";
 }
 
 int Mask::valid_cells() const {
 	return this->_valid_cells;
+}
+
+void Mask::eraseGrid() {
+	for (int r = 0; r < this->_rows; r++) {
+		for (int c = 0; c < this->_columns; c++) {
+			if (!this->validAt(r, c)) {
+				// delete this->cells.at(r).at(c);
+				this->cells.at(r).at(c) = nullptr;
+			}
+		}
+	}
+}
+
+std::vector<cell*> Mask::linklessValidNeighbors(cell* cp) {
+	std::vector<cell*> linklessNeighbors = cp->neighborsWithNoLinks();
+	std::vector<cell*> ret;
+	for (int i = 0; i < linklessNeighbors.size(); ++i) {
+		if (this->validAt(linklessNeighbors[i]->row(), linklessNeighbors[i]->column())) {
+			ret.push_back(linklessNeighbors[i]);
+		}
+	}
+	return ret;
+}
+
+void Mask::reconfigureCells() {
+	// std::cout<< "this->_rows is " << this->_rows << "\n";
+	// std::cout<< "this->_columns is " << this->_columns << "\n";
+	cell* cellnullptr = nullptr;
+	for (int r = 0; r < this->_rows; r++) {
+		for (int c = 0; c < this->_columns; c++) {
+			// std::cout<< "r: " << r << "\nc: " << c << "\n";
+			cell& tc = *this->at(r, c);
+			if (this->validAt(r, c)) {
+				tc.setnorth(*this->at(r - 1, c), this->validAt(r - 1, c));
+				tc.setsouth(*this->at(r + 1, c), this->validAt(r + 1, c));
+				tc.seteast(*this->at(r, c + 1), this->validAt(r, c + 1));
+				tc.setwest(*this->at(r, c - 1), this->validAt(r, c - 1));
+			}
+			
+		}
+	}
+}
+
+bool Mask::validAt(int r, int c) {
+	// return this->at(r, c) != nullptr;
+	if (r < 0 || r >= this->_rows || c < 0 || c >= this->_columns) {
+		// std::cout << "out of bounds at r: " << r; std::cout<< " c: " << c  << "\n";
+		return false;
+	}
+	// if (!this->_mask.at(r).at(c))
+	// {
+	// 	std::cout << "false mask at r: " << r; std::cout<< " c: " << c  << "\n";
+	// } else {
+	// 	std::cout << "true mask at r: " << r; std::cout<< " c: " << c  << "\n";
+	// }
+	return this->_mask.at(r).at(c);
+}
+
+cell* Mask::randomCell() {
+	int* r; int* c;
+	randomLocation(r, c);
+	return this->at(*r, *c);
+}
+
+void Mask::randomLocation(int* r, int* c) {
+	(*r) = randInt(0, this->_rows - 1);
+	(*c) = randInt(0, this->_columns - 1);
+	while(!this->validAt(*r, *c)) {
+		(*r) = randInt(0, this->_rows - 1);
+		(*c) = randInt(0, this->_columns - 1);
+	}
 }

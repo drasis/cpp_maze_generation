@@ -52,6 +52,9 @@ cell* Grid::randomCell() {
 }
 
 short Grid::connections(int r, int c) {
+	if (this->at(r, c) == nullptr) {
+		return 0;
+	}
 	return this->at(r, c)->connections();
 }
 
@@ -63,11 +66,6 @@ void Grid::configureCells() {
 			tc.setsouth(*this->at(r + 1, c));
 			tc.seteast(*this->at(r, c + 1));
 			tc.setwest(*this->at(r, c - 1));
-			// cell* tc = this->at(r, c);
-			// tc->setnorth(*this->at(r - 1, c));
-			// tc->setsouth(*this->at(r + 1, c));
-			// tc->seteast(*this->at(r, c + 1));
-			// tc->setwest(*this->at(r, c - 1));
 		}
 	}
 }

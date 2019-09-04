@@ -34,4 +34,7 @@ int findIndex(std::vector<T>& v, T& obj) {
 
 bool coinFlip();
 
+int rowsOfText(std::string path);
+int columnsOfText(std::string path);
+
 #endif

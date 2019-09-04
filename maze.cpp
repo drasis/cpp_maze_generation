@@ -8,14 +8,44 @@
 // #include <iostream>
 #include <unordered_set>
 #include <ctime>
+#include <unistd.h>
+#include <stdio.h>
+#include <execinfo.h>
+#include <signal.h>
+#include <stdlib.h>
+// #include <unistd.h>
 // using namespace std;
+
+// void handler(int sig) {
+//   void *array[10];
+//   size_t size;
+
+//   // get void*'s for all entries on the stack
+//   size = backtrace(array, 10);
+
+//   // print out all the frames to stderr
+//   fprintf(stderr, "Error: signal %d:\n", sig);
+//   backtrace_symbols_fd(array, size, STDERR_FILENO);
+//   exit(1);
+// }
 
 char printDig(short digit) {
 	return "0123456789abcdef"[digit];
-	// cout << "0123456789abcdef"[digit];
 }
 
-void printGrid(Grid g, int i = 0) {
+void debugGrid(Grid& g) {
+	for (int r = 0; r < g.rows(); ++r) {
+		for (int c = 0; c < g.columns(); ++c) {
+			if (g.at(r, c) != nullptr)
+			{
+				g.at(r, c)->displayNeighbors();
+			}
+			
+		}
+	}
+}
+
+void printGrid(Grid& g, int i = 0) {
 	char printout[g.rows()][g.columns()];
 	for (int i = 0; i < g.rows(); ++i) {
 		for (int j = 0; j < g.columns(); ++j) {
@@ -162,8 +192,14 @@ void huntAndKill(Grid& g) {
 void backtrackingCarver(Grid& g) {
 	std::vector<cell*> stack;
 	stack.push_back(g.randomCell());
+	// stack.push_back(g.at(8, 47));
 	while(stack.size() > 0) {
-		std::cout << stack.size() << std::endl;
+		// std::cout << stack.size() << std::endl;
+		// std::cout << "exploring row: " << stack.at(stack.size() - 1)->row() << std::endl;
+		// std::cout << "exploring col: " << stack.at(stack.size() - 1)->column() << std::endl;
+		// printGrid(g);
+		// std::cout << "\n\n";
+		// usleep(5000);
 		cell* cp = stack.at(stack.size() - 1);
 		std::vector<cell*> linklessNeighbors = cp->neighborsWithNoLinks();
 		if (linklessNeighbors.size() > 0) {
@@ -176,8 +212,47 @@ void backtrackingCarver(Grid& g) {
 	}
 }
 
+void backtrackingCarverMasked(Mask& g) {
+	std::vector<cell*> stack;
+	stack.push_back(g.at(8, 47));
+	while(stack.size() > 0) {
+		std::cout << stack.size() << std::endl;
+		cell* cp = stack.at(stack.size() - 1);
+		std::vector<cell*> linklessNeighbors = g.linklessValidNeighbors(cp);
+		// std::vector<cell*> linklessNeighbors = cp->neighborsWithNoLinks();
+		if (linklessNeighbors.size() > 0) {
+			cell* nextcp = linklessNeighbors[randInt(0, linklessNeighbors.size() - 1)];
+			stack.push_back(nextcp);
+			cp->link(*nextcp);
+		} else {
+			stack.pop_back();
+		}
+	}
+}
+
+// void backtrackingCarver(Mask& g) {
+// 	std::vector<cell*> stack;
+// 	stack.push_back(g.randomCell());
+// 	while(stack.size() > 0) {
+// 		std::cout << stack.size() << std::endl;
+// 		// printGrid(g);
+// 		// std::cout << "\n\n";
+// 		// usleep(5000);
+// 		cell* cp = stack.at(stack.size() - 1);
+// 		std::vector<cell*> linklessNeighbors = cp->neighborsWithNoLinks();
+// 		if (linklessNeighbors.size() > 0) {
+// 			cell* nextcp = linklessNeighbors[randInt(0, linklessNeighbors.size() - 1)];
+// 			stack.push_back(nextcp);
+// 			cp->link(*nextcp);
+// 		} else {
+// 			stack.pop_back();
+// 		}
+// 	}
+// }
+
 int main(int argc, char *argv[]) {
-	srand(time(nullptr));
+	// signal(SIGSEGV, handler);
+	// srand(time(nullptr));
 	// clock_t begin = clock();
 	int r, c;
 
@@ -190,8 +265,13 @@ int main(int argc, char *argv[]) {
 	} else {
 		exit(1);
 	}
-	Mask m(r, c, "./recurselogo.txt");
-	// Grid g(r, c);
+	Mask m(rowsOfText("./recurselogo.txt"), 
+		columnsOfText("./recurselogo.txt"), 
+		"./recurselogo.txt");
+	// debugGrid(m);
+	// backtrackingCarverMasked(m);
+	// printGrid(m);
+	Grid g(r, c);
 	// cout << "time to make grid: " << double(clock() - begin) << "\n";
 	// begin = clock();
 	// randomBinaryWalk(g);
@@ -199,10 +279,10 @@ int main(int argc, char *argv[]) {
 	// aldousBroder(g);
 	// wilson(g); // DOESN'T WORK I NEED TO TAKE A REST FROM THIS ONE!!!!
 	// huntAndKill(g);
-	// backtrackingCarver(g);
+	backtrackingCarver(g);
 	// cout << "time to make maze: " << double(clock() - begin) << "\n";
 	// begin = clock();
-	// printGrid(g);
+	printGrid(g);
 	// cout << "time to print maze: " << double(clock() - begin) << "\n";
 }
 
