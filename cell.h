@@ -33,12 +33,12 @@ public:
 	cell* geteast() const;
 	void setwest(cell& c, bool tonull = false);
 	cell* getwest() const;
-	void link(cell& c, bool bidi = true);
-	void unlink(cell& c, bool bidi = true);
-	bool linked(cell& c);
+	void link(cell* c, bool bidi = true);
+	void unlink(cell* c, bool bidi = true);
+	bool linked(cell* c);
 	void displayLinks();
 	void displayNeighbors() const;
-	std::vector<cell> getLinks();
+	std::vector<cell*> getLinks();
 	cell* randomNeighbor();
 	bool hasNoLinks();
 	short connections();
@@ -48,7 +48,7 @@ public:
 private:
 	int _row, _column;
 	cell* north; cell* south; cell* east; cell* west;
-	std::unordered_set<cell> links;
+	std::unordered_set<cell*> links;
 };
 
 #endif

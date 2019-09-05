@@ -30,7 +30,7 @@
 // }
 
 char printDig(short digit) {
-	return "0123456789abcdef"[digit];
+	return "0123456789abcde0"[digit];
 }
 
 void debugGrid(Grid& g) {
@@ -69,7 +69,7 @@ void randomBinaryWalk(Grid& g) {
 				ind = (ind + 1) % 2;
 			}
 			if (!(cells[0] == nullptr && cells[1] == nullptr)) {
-				g.at(i, j)->link(*cells[ind]);
+				g.at(i, j)->link(cells[ind]);
 			}
 		}
 	}
@@ -87,11 +87,11 @@ void sidewinderWalk(Grid& g) {
 			if (shouldClose) {
 				cell* member = run[randInt(0, run.size() - 1)];
 				if (member->getsouth() != nullptr) {
-					member->link(*member->getsouth());
+					member->link(member->getsouth());
 				}
 				run.clear();
 			} else if (cp->geteast() != nullptr) {
-				cp->link(*cp->geteast());
+				cp->link(cp->geteast());
 			}
 		}
 		run.clear();
@@ -104,7 +104,7 @@ void aldousBroder(Grid& g) {
 	while (unvisited > 0) {
 		cell* neighbor = cp->randomNeighbor();
 		if (neighbor->hasNoLinks()) {
-			cp->link(*neighbor);
+			cp->link(neighbor);
 			unvisited -= 1;
 		}
 		cp = neighbor;
@@ -144,7 +144,8 @@ void wilson(Grid& g) {
 			}
 		}
 		for (int i = 0; i < path.size() - 2; ++i) {
-			path[i].link(path[i + 1]);
+			// cell* cp = *path[i + 1];
+			path[i].link(&path[i + 1]);
 			unvisited.erase(path[i]);
 		}
 		path.clear();
@@ -167,7 +168,7 @@ void huntAndKill(Grid& g) {
 					std::vector<cell*> neighbors = testing->neighbors();
 					for (int j = 0; j < neighbors.size() - 1; ++j) {
 						if (!neighbors[j]->hasNoLinks()) {
-							testing->link(*neighbors[j]);
+							testing->link(neighbors[j]);
 							unvisited--;
 							cp = testing;
 							happenedUpon = true;
@@ -182,7 +183,7 @@ void huntAndKill(Grid& g) {
 		} else {
 			std::vector<cell*> linkless = cp->neighborsWithNoLinks();
 			cell* newcp = linkless[randInt(0, linkless.size() - 1)];
-			cp->link(*newcp);
+			cp->link(newcp);
 			unvisited--;
 			cp = newcp;
 		}
@@ -192,20 +193,13 @@ void huntAndKill(Grid& g) {
 void backtrackingCarver(Grid& g) {
 	std::vector<cell*> stack;
 	stack.push_back(g.randomCell());
-	// stack.push_back(g.at(8, 47));
 	while(stack.size() > 0) {
-		// std::cout << stack.size() << std::endl;
-		// std::cout << "exploring row: " << stack.at(stack.size() - 1)->row() << std::endl;
-		// std::cout << "exploring col: " << stack.at(stack.size() - 1)->column() << std::endl;
-		// printGrid(g);
-		// std::cout << "\n\n";
-		// usleep(5000);
 		cell* cp = stack.at(stack.size() - 1);
 		std::vector<cell*> linklessNeighbors = cp->neighborsWithNoLinks();
 		if (linklessNeighbors.size() > 0) {
 			cell* nextcp = linklessNeighbors[randInt(0, linklessNeighbors.size() - 1)];
 			stack.push_back(nextcp);
-			cp->link(*nextcp);
+			cp->link(nextcp);
 		} else {
 			stack.pop_back();
 		}
@@ -216,58 +210,43 @@ void backtrackingCarverMasked(Mask& g) {
 	std::vector<cell*> stack;
 	stack.push_back(g.at(8, 47));
 	while(stack.size() > 0) {
-		std::cout << stack.size() << std::endl;
+		// std::cout << stack.size() << std::endl;
 		cell* cp = stack.at(stack.size() - 1);
 		std::vector<cell*> linklessNeighbors = g.linklessValidNeighbors(cp);
 		// std::vector<cell*> linklessNeighbors = cp->neighborsWithNoLinks();
 		if (linklessNeighbors.size() > 0) {
 			cell* nextcp = linklessNeighbors[randInt(0, linklessNeighbors.size() - 1)];
 			stack.push_back(nextcp);
-			cp->link(*nextcp);
+			cp->link(nextcp);
 		} else {
 			stack.pop_back();
 		}
 	}
 }
 
-// void backtrackingCarver(Mask& g) {
-// 	std::vector<cell*> stack;
-// 	stack.push_back(g.randomCell());
-// 	while(stack.size() > 0) {
-// 		std::cout << stack.size() << std::endl;
-// 		// printGrid(g);
-// 		// std::cout << "\n\n";
-// 		// usleep(5000);
-// 		cell* cp = stack.at(stack.size() - 1);
-// 		std::vector<cell*> linklessNeighbors = cp->neighborsWithNoLinks();
-// 		if (linklessNeighbors.size() > 0) {
-// 			cell* nextcp = linklessNeighbors[randInt(0, linklessNeighbors.size() - 1)];
-// 			stack.push_back(nextcp);
-// 			cp->link(*nextcp);
-// 		} else {
-// 			stack.pop_back();
-// 		}
-// 	}
-// }
-
 int main(int argc, char *argv[]) {
-	// signal(SIGSEGV, handler);
-	// srand(time(nullptr));
-	// clock_t begin = clock();
 	int r, c;
+	std::string filepath;
 
 	if (argc == 3) {
 		r = std::stoi(argv[1]);
 		c = std::stoi(argv[2]);
+	} else if (argc == 2) {
+		Mask m(rowsOfText(argv[1]), 
+			columnsOfText(argv[1]), 
+			argv[1]);
+		backtrackingCarverMasked(m);
+		printGrid(m);
+		exit(0);
 	} else if (argc == 1) {
 		r = 10;
 		c = 15;
 	} else {
 		exit(1);
 	}
-	Mask m(rowsOfText("./recurselogo.txt"), 
-		columnsOfText("./recurselogo.txt"), 
-		"./recurselogo.txt");
+	// Mask m(rowsOfText("./recurselogo.txt"), 
+	// 	columnsOfText("./recurselogo.txt"), 
+	// 	"./recurselogo.txt");
 	// debugGrid(m);
 	// backtrackingCarverMasked(m);
 	// printGrid(m);

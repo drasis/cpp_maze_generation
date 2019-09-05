@@ -132,27 +132,27 @@ bool cell::hasNoLinks() {
 	return this->links.size() == 0;
 }
 
-void cell::link(cell& c, bool bidi) {
+void cell::link(cell* c, bool bidi) {
 	links.insert(c);
 	if (bidi) {
-		c.link(*this, false);
+		c->link(this, false);
 	}
 }
 
-void cell::unlink(cell& c, bool bidi) {
+void cell::unlink(cell* c, bool bidi) {
 	links.erase(c);
 	if (bidi) {
-		c.unlink(*this, false);
+		c->unlink(this, false);
 	}
 }
 
-bool cell::linked(cell& c) {
+bool cell::linked(cell* c) {
 	return contains(this->links, c);
 }
 
-std::vector<cell> cell::getLinks() {
-	std::vector<cell> connectedCells;
-	std::unordered_set<cell>::iterator c;
+std::vector<cell*> cell::getLinks() {
+	std::vector<cell*> connectedCells;
+	std::unordered_set<cell*>::iterator c;
 	for (c = this->links.begin(); c != this->links.end(); c++) {
 		connectedCells.push_back(*c);
 	}
@@ -162,16 +162,16 @@ std::vector<cell> cell::getLinks() {
 short cell::connections() {
 	int v[4] = {true, true, true, true};
 	if (this->north != nullptr) {
-		v[0] = !this->linked(*this->north);
+		v[0] = !this->linked(this->north);
 	}
 	if (this->east != nullptr) {
-		v[1] = !this->linked(*this->east);
+		v[1] = !this->linked(this->east);
 	}
 	if (this->south != nullptr) {
-		v[2] = !this->linked(*this->south);
+		v[2] = !this->linked(this->south);
 	}
 	if (this->west != nullptr) {
-		v[3] = !this->linked(*this->west);
+		v[3] = !this->linked(this->west);
 	}
 	return v[3] << 3 | v[2] << 2 | v[1] << 1 | v[0];
 }
@@ -194,7 +194,7 @@ std::vector<cell*> cell::neighbors() {
 }
 
 std::vector<cell*> cell::neighborsWithNoLinks() {
-	std::vector<cell*> ret;
+	std::vector<cell*> ret = *(new std::vector<cell*>);
 	if (this->north != nullptr) {
 		if(this->north->hasNoLinks()) {
 			ret.push_back(north);
@@ -224,7 +224,7 @@ std::vector<cell*> cell::neighborsWithNoLinks() {
 
 void cell::displayLinks() {
 	std::cout << *this << " linked to:\n";
-	std::unordered_set<cell>::iterator c;
+	std::unordered_set<cell*>::iterator c;
 	for (c = this->links.begin(); c != this->links.end(); c++) {
 		std::cout << "    " << *c << "\n";
 	}
