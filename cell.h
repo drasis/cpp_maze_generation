@@ -1,8 +1,5 @@
 #ifndef CELL_H
 #define CELL_H
-// This use of #ifndef, #define and #endif is called "an include 
-// guard".  It avoids problems with people including header files
-// more than once and then having symbols defined more than once.
 #include <string>
 #include <iostream>
 #include <unordered_set>
@@ -44,7 +41,6 @@ public:
 	short connections();
 	std::vector<cell*> neighbors();
 	std::vector<cell*> neighborsWithNoLinks();
-	// void neighborFlags(bool(&c)[4]) const;
 private:
 	int _row, _column;
 	cell* north; cell* south; cell* east; cell* west;

@@ -50,18 +50,14 @@ int cell::column() const{
 }
 
 void cell::setnorth(cell& c, bool tonull) {
-	// std::cout << "call to north\n";
-	// std::cout <<"this: " << this << "\nthis->north: " << this->north << std::endl;
 	if (!tonull) {
 		this->north = &c;
 	} else {
 		this->north = nullptr;
 	}
-	// std::cout << "leaving north\n";
 }
 
 void cell::setsouth(cell& c, bool tonull) {
-	// std::cout << "call to south\n" << std::flush;
 	if (!tonull) {
 		this->south = &c;
 	} else {
@@ -70,7 +66,6 @@ void cell::setsouth(cell& c, bool tonull) {
 }
 
 void cell::seteast(cell& c, bool tonull) {
-	// std::cout << "call to east\n";
 	if (!tonull) {
 		this->east = &c;
 	} else {
@@ -79,7 +74,6 @@ void cell::seteast(cell& c, bool tonull) {
 }
 
 void cell::setwest(cell& c, bool tonull) {
-	// std::cout << "call to west\n";
 	if (!tonull) {
 		this->west = &c;
 	} else {

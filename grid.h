@@ -17,7 +17,6 @@ public:
 	int columns() const;
 private:
 	void prepareGrid();
-	// void configureCells();
 protected:
 	void configureCells();
 	int _rows, _columns;

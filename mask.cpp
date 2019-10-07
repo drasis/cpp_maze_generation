@@ -1,10 +1,7 @@
+#include "randomHelpers.h"
 #include "cell.h"
 #include "mask.h"
 #include <fstream>
-#include "randomHelpers.h"
-// #include <iostream>
-// #include <unordered_set>
-// #include <vector>
 
 Mask::Mask(int rows, int columns, std::string path) : Grid(rows, columns) {
 	this->_valid_cells = 0;

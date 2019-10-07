@@ -4,6 +4,10 @@
 #include <vector>
 #include <math.h>
 
+///////////////////////////////////////////////////////////////////////////////
+// CONSTRUCTOR & GRID SETUP ///////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
 Grid::Grid(int rows, int columns) {
 	this->_rows = rows;
 	this->_columns = columns;
@@ -22,6 +26,22 @@ void Grid::prepareGrid() {
 		}
 	}
 }
+
+void Grid::configureCells() {
+	for (int r = 0; r < this->_rows; r++) {
+		for (int c = 0; c < this->_columns; c++) {
+			cell& tc = *this->at(r, c);
+			tc.setnorth(*this->at(r - 1, c));
+			tc.setsouth(*this->at(r + 1, c));
+			tc.seteast(*this->at(r, c + 1));
+			tc.setwest(*this->at(r, c - 1));
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// GETTING, SETTING MEMBERS & OTHER INFO //////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 cell* Grid::at(int r, int c) {
 	if (r >= 0 && r < this->_rows && c < this->_columns && c >= 0) {
@@ -56,18 +76,6 @@ short Grid::connections(int r, int c) {
 		return 0;
 	}
 	return this->at(r, c)->connections();
-}
-
-void Grid::configureCells() {
-	for (int r = 0; r < this->_rows; r++) {
-		for (int c = 0; c < this->_columns; c++) {
-			cell& tc = *this->at(r, c);
-			tc.setnorth(*this->at(r - 1, c));
-			tc.setsouth(*this->at(r + 1, c));
-			tc.seteast(*this->at(r, c + 1));
-			tc.setwest(*this->at(r, c - 1));
-		}
-	}
 }
 
 int Grid::size() const {
