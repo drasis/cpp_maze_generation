@@ -57,12 +57,9 @@ std::vector<cell*> Mask::linklessValidNeighbors(cell* cp) {
 }
 
 void Mask::reconfigureCells() {
-	// std::cout<< "this->_rows is " << this->_rows << "\n";
-	// std::cout<< "this->_columns is " << this->_columns << "\n";
 	cell* cellnullptr = nullptr;
 	for (int r = 0; r < this->_rows; r++) {
 		for (int c = 0; c < this->_columns; c++) {
-			// std::cout<< "r: " << r << "\nc: " << c << "\n";
 			cell& tc = *this->at(r, c);
 			if (this->validAt(r, c)) {
 				tc.setnorth(*this->at(r - 1, c), this->validAt(r - 1, c));

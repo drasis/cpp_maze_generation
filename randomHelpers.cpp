@@ -19,7 +19,7 @@ int rowsOfText(std::string path) {
 	std::string line;
 	std::ifstream myfile(path);
 	while (std::getline(myfile, line)) {
-		++ret;
+		ret++;
 	}
 	myfile.close();
 	return ret;

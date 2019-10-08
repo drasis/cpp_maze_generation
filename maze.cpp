@@ -7,15 +7,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char printDig(short digit) {
-	return "0123456789abcde0"[digit];
-}
-
 void debugGrid(Grid& g) {
 	for (int r = 0; r < g.rows(); ++r) {
 		for (int c = 0; c < g.columns(); ++c) {
-			if (g.at(r, c) != nullptr)
-			{
+			if (g.at(r, c) != nullptr) {
 				g.at(r, c)->displayNeighbors();
 			}
 			
@@ -24,15 +19,9 @@ void debugGrid(Grid& g) {
 }
 
 void printGrid(Grid& g, int i = 0) {
-	char printout[g.rows()][g.columns()];
 	for (int i = 0; i < g.rows(); ++i) {
 		for (int j = 0; j < g.columns(); ++j) {
-			printout[i][j] = printDig(g.connections(i, j));
-		}
-	}
-	for (int i = 0; i < g.rows(); ++i) {
-		for (int j = 0; j < g.columns(); ++j) {
-			std::cout << printout[i][j];
+			std::cout << "0123456789abcde0"[g.connections(i, j)];
 		}
 		std::cout << std::endl;
 	}
