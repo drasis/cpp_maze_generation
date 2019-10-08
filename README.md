@@ -6,11 +6,11 @@ TODO (when I have time, and in a different repo): use openCV's contour detection
 
 ### USAGE
 
-I wrote this program for myself as the end-user, but I'm including usage instructions in case someone else finds part/all of it useful. I wish I had written more comments.
+I wrote this program for myself as the end-user, but I'm including usage instructions in case someone else finds part/all of it useful. I wish I'd written more comments in the code for you.
 
 To create executable: navigate to `generator-src` and enter `make` (this worked with no warnings or errors using macOS & Fedora, but no guarantees obviously lol).
 
-The program prints out your maze encoded as a string, where each cell is represented by a hex digit. Open the webpage in `maze_renderer`, and paste your maze into the form. If you want to write your own generator, and just use the renderer, the cells are encoded like this: 
+The program prints out your maze encoded as a string, where each cell is represented by a hex digit. Open the webpage in `maze_renderer`, and paste your maze into the form. On the page you can: view your maze, save a png of your maze, and toggle a solution on/off. If you want to write your own generator, and just use the renderer, the cells are encoded like this: 
 
 ![](./readme-images/encoding-chart.png)
 
