@@ -75,6 +75,12 @@ short Grid::connections(int r, int c) {
 	if (this->at(r, c) == nullptr) {
 		return 0;
 	}
+	if (r == 0 && c == 0) {
+		return this->at(r, c)->connections() & 7; //remove left wall
+	}
+	if (r == this->_rows - 1 && c == this->_columns - 1) {
+		return this->at(r, c)->connections() & 13; //remove right wall
+	}
 	return this->at(r, c)->connections();
 }
 
