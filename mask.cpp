@@ -28,13 +28,6 @@ Mask::Mask(int rows, int columns, std::string path) : Grid(rows, columns) {
 		std::cout << "mask size does not match input size\n";
 		exit(1);
 	}
-	
-	
-	// this->reconfigureCells();
-	// std::cout <<"configured\n";
-	// this->eraseGrid();
-	// this->eraseGrid();
-	// std::cout<<"erased\n";
 }
 
 int Mask::valid_cells() const {
@@ -83,17 +76,9 @@ void Mask::reconfigureCells() {
 }
 
 bool Mask::validAt(int r, int c) {
-	// return this->at(r, c) != nullptr;
 	if (r < 0 || r >= this->_rows || c < 0 || c >= this->_columns) {
-		// std::cout << "out of bounds at r: " << r; std::cout<< " c: " << c  << "\n";
 		return false;
 	}
-	// if (!this->_mask.at(r).at(c))
-	// {
-	// 	std::cout << "false mask at r: " << r; std::cout<< " c: " << c  << "\n";
-	// } else {
-	// 	std::cout << "true mask at r: " << r; std::cout<< " c: " << c  << "\n";
-	// }
 	return this->_mask.at(r).at(c);
 }
 
