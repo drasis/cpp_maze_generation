@@ -1,6 +1,6 @@
-### MAZE GENERATOR
+<img src="./readme-images/maze!.png" width="500"/>
 
-![maze](./readme-images/maze!.png)
+### MAZE GENERATOR
 
 I've implemented 7 algorithms in C++ to procedurally generate perfect two-dimensional mazes! Perfect mazes contain no loops, and for each point in the maze, there is exactly one path to any other point in the maze. One of the algorithms I implemented takes a 2D bitmask as an input, so it can generate mazes in different shapes. [This webpage](https://www.astrolog.org/labyrnth/algrithm.htm) is an excellent primer on maze classification and the tradoffs/biases of different maze generation algorithms. 
 
