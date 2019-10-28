@@ -1,4 +1,4 @@
-<img src="./readme-images/maze!.png" width="500"/>
+<p align="center"><img src="./readme-images/maze!.png" width="500"/></p>
 
 ### MAZE GENERATOR
 
